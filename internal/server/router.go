@@ -11,9 +11,8 @@ func setRouter() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		api.GET("/hello", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"msg": "world"})
-		})
+		api.POST("/signup", signUp)
+		api.POST("/signin", signIn)
 	}
 
 	router.NoRoute(func(ctx *gin.Context) {
