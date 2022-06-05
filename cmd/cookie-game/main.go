@@ -1,7 +1,10 @@
 package main
 
-import "github.com/markcirineo/cookie-game/internal/server"
+import (
+	"github.com/markcirineo/cookie-game/internal/conf"
+	"github.com/markcirineo/cookie-game/internal/server"
+)
 
 func main() {
-	server.Start()
+	server.Start(conf.NewConfig())
 }
