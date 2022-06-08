@@ -60,3 +60,14 @@ func GenerateSalt() ([]byte, error) {
 	}
 	return salt, nil
 }
+
+func FetchUser(id int) (*User, error) {
+	user := new(User)
+	user.ID = id
+	err := db.Model(user).Returning("*").WherePK().Select()
+	if err != nil {
+		log.Error().Err(err).Msg("error fetching user")
+		return nil, err
+	}
+	return user, nil
+}
