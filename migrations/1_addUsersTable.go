@@ -14,6 +14,8 @@ func init() {
 			username TEXT NOT NULL UNIQUE,
 			hashed_password BYTEA NOT NULL,
 			salt BYTEA NOT NULL,
+			cookies INT,
+			last_claimed TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 			modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 		)`)
