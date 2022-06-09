@@ -14,8 +14,14 @@ type User struct {
 	Password       string `pg:"-" binding:"required,min=7,max=30"`
 	HashedPassword []byte `json:"-"`
 	Salt           []byte `json:"-"`
+	Cookies        int
+	LastClaimed    time.Time
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
+}
+
+type UpdateCookies struct {
+	UserID     int
 }
 
 func AddUser(user *User) error {
@@ -31,6 +37,7 @@ func AddUser(user *User) error {
 
 	user.Salt = salt
 	user.HashedPassword = hashedPassword
+	user.Cookies = 0
 
 	_, err = db.Model(user).Returning("*").Insert()
 	if err != nil {
@@ -67,6 +74,24 @@ func FetchUser(id int) (*User, error) {
 	err := db.Model(user).Returning("*").WherePK().Select()
 	if err != nil {
 		log.Error().Err(err).Msg("error fetching user")
+		return nil, err
+	}
+	return user, nil
+}
+
+func AddCookies(id int, newCookies int) (*User, error) {
+	user := new(User)
+	user.Cookies = newCookies
+	user.LastClaimed = time.Now()
+	_, err := db.Model(user).Column("cookies").Where("ID = ?", id).Update()
+	if err != nil {
+		log.Error().Err(err).Msg("error adding cookies")
+		return nil, err
+	}
+
+	_, err = db.Model(user).Column("last_claimed").Where("ID = ?", id).Update()
+	if err != nil {
+		log.Error().Err(err).Msg("error updating lastclaimed")
 		return nil, err
 	}
 	return user, nil
