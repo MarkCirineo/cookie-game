@@ -11,12 +11,7 @@ import (
 )
 
 func signUp(ctx *gin.Context) {
-	user := new(store.User)
-	if err := ctx.Bind(user); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
-
+	user := ctx.MustGet(gin.BindKey).(*store.User)
 	if  err := store.AddUser(user); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -29,23 +24,16 @@ func signUp(ctx *gin.Context) {
 }
 
 func signIn(ctx *gin.Context) {
-	user := new(store.User)
-	if err := ctx.Bind(user); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
-
+	user := ctx.MustGet(gin.BindKey).(*store.User)
 	user, err := store.Authenticate(user.Username, user.Password)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "sign in failed"})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Sign in failed."})
 	}
 	
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "Signed in successfully.",
 		"jwt": generateJWT(user),
 	})
-
-	ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": "Sign in failed."})
 }
 
 func addCookies(ctx *gin.Context) {

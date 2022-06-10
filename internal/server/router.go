@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/markcirineo/cookie-game/internal/store"
 )
 
 func setRouter() *gin.Engine {
@@ -12,9 +13,10 @@ func setRouter() *gin.Engine {
 	router.RedirectTrailingSlash = true
 
 	api := router.Group("/api")
+	api.Use(customErrors)
 	{
-		api.POST("/signup", signUp)
-		api.POST("/signin", signIn)
+		api.POST("/signup", gin.Bind(store.User{}), signUp)
+		api.POST("/signin", gin.Bind(store.User{}), signIn)
 	}
 
 	authorized := api.Group("/")
