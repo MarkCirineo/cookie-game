@@ -1,8 +1,8 @@
 import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import AuthContext from "../store/auth-context";
-import Errors from "./Errors";
+import AuthContext from "../../store/auth-context";
+import Errors from "../Errors/Errors";
 
 const AuthForm = () => {
     const navigate = useNavigate();
@@ -44,10 +44,14 @@ const AuthForm = () => {
                 if (!data.hasOwnProperty("error")) {
                     throw  new Error(errorText);
                 }
-                if (typeof data["error"] === "string") {
-                    setErrors({ "unknown": data["error"] });
+                if (typeof data.error === "string") {
+                    if (data.error === 'ERROR #23505 duplicate key value violates unique constraint "users_username_key"') {
+                        setErrors({ "unknown": "Username is taken."});
+                        return;
+                    }
+                    setErrors({ "unknown": data.error });
                 } else {
-                    setErrors(data["errors"]);
+                    setErrors(data.error);
                 }
             } else {
                 authContext.login(data.jwt);
