@@ -22,7 +22,7 @@ func Start(cfg conf.Config) {
 
 	store.SetDBConnection(database.NewDBOptions(cfg))
 
-	router := setRouter()
+	router := setRouter(cfg)
 
 	server := &http.Server{
 		Addr: cfg.Host + ":" + cfg.Port,
@@ -46,6 +46,6 @@ func Start(cfg conf.Config) {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal().Err(err).Msg("server forced to shutdown")
 	}
-	
+
 	log.Info().Msg("server exiting")
 }
