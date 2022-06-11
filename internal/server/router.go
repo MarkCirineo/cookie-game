@@ -3,14 +3,20 @@ package server
 import (
 	"net/http"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/markcirineo/cookie-game/internal/conf"
 	"github.com/markcirineo/cookie-game/internal/store"
 )
 
-func setRouter() *gin.Engine {
+func setRouter(cfg conf.Config) *gin.Engine {
 	router := gin.Default()
 
 	router.RedirectTrailingSlash = true
+
+	if cfg.Env == "prod" {
+		router.Use(static.Serve("/", static.LocalFile("./assets/build", true)))
+	}
 
 	api := router.Group("/api")
 	api.Use(customErrors)
