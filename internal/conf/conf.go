@@ -7,28 +7,29 @@ import (
 )
 
 const (
-	hostKey = "COOKIE_GAME_HOST"
-	portKey = "COOKIE_GAME_PORT"
-	dbHostKey = "COOKIE_GAME_DB_HOST"
-	dbPortKey = "COOKIE_GAME_DB_PORT"
-	dbNameKey = "COOKIE_GAME_DB_NAME"
-	dbUserKey = "COOKIE_GAME_DB_USER"
+	hostKey       = "COOKIE_GAME_HOST"
+	portKey       = "COOKIE_GAME_PORT"
+	dbHostKey     = "COOKIE_GAME_DB_HOST"
+	dbPortKey     = "COOKIE_GAME_DB_PORT"
+	dbNameKey     = "COOKIE_GAME_DB_NAME"
+	dbUserKey     = "COOKIE_GAME_DB_USER"
 	dbPasswordKey = "COOKIE_GAME_DB_PASSWORD"
-	jwtSecretKey = "COOKIE_GAME_JWT_SECRET"
+	jwtSecretKey  = "COOKIE_GAME_JWT_SECRET"
 )
 
 type Config struct {
-	Host string
-	Port string
-	DbHost string
-	DbPort string
-	DbName string
-	DbUser string
+	Host       string
+	Port       string
+	DbHost     string
+	DbPort     string
+	DbName     string
+	DbUser     string
 	DbPassword string
-	JwtSecret string
-} 
+	JwtSecret  string
+	Env        string
+}
 
-func NewConfig() Config {
+func NewConfig(env string) Config {
 	host, ok := os.LookupEnv(hostKey)
 	if !ok || host == "" {
 		logAndPanic(hostKey)
@@ -70,14 +71,15 @@ func NewConfig() Config {
 	}
 
 	return Config{
-		Host: host,
-		Port: port,
-		DbHost: dbHost,
-		DbPort: dbPort,
-		DbName: dbName,
-		DbUser: dbUser,
+		Host:       host,
+		Port:       port,
+		DbHost:     dbHost,
+		DbPort:     dbPort,
+		DbName:     dbName,
+		DbUser:     dbUser,
 		DbPassword: dbPassword,
-		JwtSecret: jwtSecret,
+		JwtSecret:  jwtSecret,
+		Env:        env,
 	}
 }
 
