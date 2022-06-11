@@ -41,7 +41,8 @@ func AddUser(user *User) error {
 
 	_, err = db.Model(user).Returning("*").Insert()
 	if err != nil {
-		return err
+		log.Error().Err(err).Msg("error inserting new user")
+		return dbError(err)
 	}
 	return nil
 }
