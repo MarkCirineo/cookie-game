@@ -45,10 +45,6 @@ const AuthForm = () => {
                     throw  new Error(errorText);
                 }
                 if (typeof data.error === "string") {
-                    if (data.error === 'ERROR #23505 duplicate key value violates unique constraint "users_username_key"') {
-                        setErrors({ "unknown": "Username is taken."});
-                        return;
-                    }
                     setErrors({ "unknown": data.error });
                 } else {
                     setErrors(data.error);
