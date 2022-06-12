@@ -37,20 +37,9 @@ func signIn(ctx *gin.Context) {
 }
 
 func addCookies(ctx *gin.Context) {
-	update := new(store.UpdateCookies)
-	if err := ctx.Bind(update); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
 	user, err := currentUser(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	if user.ID != update.UserID {
-		ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "not authorized"})
 		return
 	}
 	
@@ -61,7 +50,7 @@ func addCookies(ctx *gin.Context) {
 	randomCookies := rand.Intn(40) - 10
 	newCookies := randomCookies + user.Cookies
 
-	updatedUser, err := store.AddCookies(update.UserID, newCookies)
+	updatedUser, err := store.AddCookies(user.ID, newCookies)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -69,5 +58,18 @@ func addCookies(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "successfully added cookies",
 		"data": updatedUser,
+	})
+}
+
+func returnUser(ctx *gin.Context) {
+	user, err := currentUser(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "current user",
+		"data": user,
 	})
 }
