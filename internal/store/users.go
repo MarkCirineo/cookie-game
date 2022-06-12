@@ -20,10 +20,6 @@ type User struct {
 	ModifiedAt     time.Time
 }
 
-type UpdateCookies struct {
-	UserID     int
-}
-
 func AddUser(user *User) error {
 	salt, err := GenerateSalt()
 	if err != nil {
@@ -38,6 +34,7 @@ func AddUser(user *User) error {
 	user.Salt = salt
 	user.HashedPassword = hashedPassword
 	user.Cookies = 0
+	user.LastClaimed = time.Now().Add(-time.Minute * 30)
 
 	_, err = db.Model(user).Returning("*").Insert()
 	if err != nil {
