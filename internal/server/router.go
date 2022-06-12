@@ -29,6 +29,7 @@ func setRouter(cfg conf.Config) *gin.Engine {
 	authorized.Use(authorization)
 	{
 		authorized.PUT("/cookies", addCookies)
+		authorized.GET("/user", returnUser)
 	}
 
 	router.NoRoute(func(ctx *gin.Context) {
