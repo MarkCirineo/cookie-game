@@ -1,0 +1,26 @@
+.cookie {
+    position: fixed;
+    top: calc(60%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+}
+
+.cookie-button {
+    border-radius: 5px;
+    background-color: #1f1f1f;
+    color: yellow;
+    border: 0;
+    width: 50%;
+    height: 50%;
+    box-shadow: 5px 5px 15px 5px #FFFFFF;
+}
+
+.cookie-text {
+    font-size: 2em;
+}
+
+.cookie-count {
+    font-size: 1em;
+}
