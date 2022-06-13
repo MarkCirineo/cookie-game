@@ -1,0 +1,13 @@
+#navbar {
+    background-color: #0f0f0f;
+}
+
+.custom-navbar-link {
+    text-decoration: none;
+    color: white;
+}
+
+.custom-navbar-link:hover {
+    color: yellow;
+    cursor: pointer;
+}
