@@ -74,7 +74,7 @@ const AuthForm = () => {
                     </div>
                     <div className="form-group pb-3">
                         <label htmlFor="password">Password</label>
-                        <input id="password" type="text" className="form-control" required ref={passwordRef}></input>
+                        <input id="password" type="password" className="form-control" required ref={passwordRef}></input>
                     </div>
                     <div className="pt-3 d-flex flex-column align-items-center">
                         <button type="submit" className="btn btn-sucess bg-white">{mainButtonText}</button>
